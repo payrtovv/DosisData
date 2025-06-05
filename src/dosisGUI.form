@@ -21,7 +21,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="afc61" binding="Inicio" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="afc61" binding="Inicio" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Inicio"/>
@@ -35,70 +35,242 @@
             <children>
               <component id="e35bc" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <font name="Gadugi" size="30" style="1"/>
+                  <horizontalAlignment value="10"/>
+                  <horizontalTextPosition value="11"/>
                   <text value="Dosis"/>
+                  <verticalTextPosition value="0"/>
                 </properties>
               </component>
               <vspacer id="18de2">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
-            </children>
-          </grid>
-          <grid id="6d1d3" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="Tratamientos"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="7da0b" class="javax.swing.JLabel">
+              <component id="1a3c5" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Gestionar Tratamientos"/>
+                  <text value="Label"/>
                 </properties>
               </component>
+            </children>
+          </grid>
+          <grid id="6d1d3" layout-manager="GridLayoutManager" row-count="14" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Tratamientos"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
               <component id="27a05" class="javax.swing.JButton" binding="agregarButton1" default-binding="true">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="9" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
                   <text value="Agregar"/>
                 </properties>
               </component>
               <component id="594a9" class="javax.swing.JButton" binding="modificarButton1" default-binding="true">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="13" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
                   <text value="Modificar"/>
                 </properties>
               </component>
-              <component id="ab0a2" class="javax.swing.JButton" binding="mostrarButton1" default-binding="true">
+              <component id="a9d60" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <font name="Gadugi" size="30"/>
+                  <text value="Gestión de Tratamientos"/>
+                </properties>
+              </component>
+              <component id="1dfb2" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Tratamiento"/>
+                </properties>
+              </component>
+              <component id="3c00d" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Agrega medicamentos a tu tratamiento"/>
+                </properties>
+              </component>
+              <component id="ab0a2" class="javax.swing.JButton" binding="mostrarTratamiento">
+                <constraints>
+                  <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
                   <text value="Mostrar"/>
                 </properties>
               </component>
-              <component id="32933" class="javax.swing.JButton" binding="borrarButton1" default-binding="true">
+              <hspacer id="b572e">
                 <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <hspacer id="5bdec">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="55b7e" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Borrar"/>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Crea tu tratamiento"/>
                 </properties>
+              </component>
+              <component id="a3926" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Nombre"/>
+                </properties>
+              </component>
+              <component id="69fd6" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Duración"/>
+                </properties>
+              </component>
+              <component id="5deec" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Estado"/>
+                </properties>
+              </component>
+              <component id="b4974" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="35"/>
+                    <preferred-size width="-1" height="35"/>
+                    <maximum-size width="-1" height="35"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="b85f8" class="javax.swing.JButton" binding="crearButton" default-binding="true">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
+                  <text value="Crear"/>
+                </properties>
+              </component>
+              <component id="e59ce" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                <constraints>
+                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="215c5" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Medicamento"/>
+                </properties>
+              </component>
+              <component id="bdf3e" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+                <constraints>
+                  <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="81ceb" class="javax.swing.JLabel" binding="imagenTrat">
+                <constraints>
+                  <grid row="2" column="3" row-span="8" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="ced0a" class="javax.swing.JButton" binding="borrarTratamientoButton">
+                <constraints>
+                  <grid row="12" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
+                  <text value="Borrar Tratamiento"/>
+                </properties>
+              </component>
+              <component id="f5e93" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Elimina tratamientos"/>
+                </properties>
+              </component>
+              <component id="b42af" class="javax.swing.JComboBox" binding="tratamientoBorrarCombo">
+                <constraints>
+                  <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="8278c" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="11" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Tratamiento"/>
+                </properties>
+              </component>
+              <component id="1fa3e" class="javax.swing.JComboBox" default-binding="true">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="7a3d6" class="javax.swing.JComboBox" default-binding="true">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
               </component>
             </children>
           </grid>
-          <grid id="3adca" layout-manager="GridLayoutManager" row-count="9" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="3adca" layout-manager="GridLayoutManager" row-count="11" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Medicamentos"/>
@@ -115,21 +287,7 @@
                 </constraints>
                 <properties>
                   <font name="Gadugi" size="30"/>
-                  <text value="Gestion medicamentos"/>
-                </properties>
-              </component>
-              <component id="cdad1" class="javax.swing.JButton" binding="agregarMedicamentoButton" default-binding="true">
-                <constraints>
-                  <grid row="5" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="610" height="50"/>
-                    <preferred-size width="610" height="50"/>
-                    <maximum-size width="610" height="50"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <background color="-13330213"/>
-                  <font size="16"/>
-                  <text value="Agregar medicamento"/>
+                  <text value="Gestión de medicamentos"/>
                 </properties>
               </component>
               <component id="50c86" class="javax.swing.JLabel">
@@ -214,67 +372,96 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="6b8c1" class="javax.swing.JButton" binding="modificarMedicamentoButton" default-binding="true">
+              <component id="4b893" class="javax.swing.JButton" binding="agregarMedicamentoButton" default-binding="true">
                 <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="250" height="50"/>
-                    <preferred-size width="250" height="50"/>
-                    <maximum-size width="250" height="50"/>
-                  </grid>
+                  <grid row="5" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-13330213"/>
-                  <font size="16"/>
-                  <text value="Modificar medicamento"/>
+                  <background color="-7419162"/>
+                  <font size="14"/>
+                  <text value="Agregar Medicamento"/>
                 </properties>
               </component>
-              <component id="68ebf" class="javax.swing.JButton" binding="listarMedicamentosButton" default-binding="true">
+              <component id="cfc0b" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="8" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="250" height="50"/>
-                    <preferred-size width="250" height="50"/>
-                    <maximum-size width="250" height="50"/>
-                  </grid>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-13330213"/>
-                  <font size="16"/>
-                  <text value="Listar medicamentos"/>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Modificar "/>
                 </properties>
               </component>
-              <component id="e2f93" class="javax.swing.JButton" binding="borrarMedicamentoButton" default-binding="true">
+              <component id="75714" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <minimum-size width="250" height="50"/>
-                    <preferred-size width="250" height="50"/>
-                    <maximum-size width="250" height="50"/>
-                  </grid>
+                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-4970490"/>
-                  <font size="16"/>
-                  <text value="Borrar medicamento"/>
+                  <font name="Gadugi" size="18"/>
+                  <text value="Borrar"/>
                 </properties>
               </component>
-              <component id="378a6" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+              <component id="96aae" class="javax.swing.JTextField">
                 <constraints>
-                  <grid row="7" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="350" height="35"/>
-                    <preferred-size width="350" height="35"/>
-                    <maximum-size width="350" height="35"/>
+                  <grid row="6" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="405" height="35"/>
+                    <preferred-size width="405" height="35"/>
+                    <maximum-size width="405" height="35"/>
                   </grid>
                 </constraints>
                 <properties/>
               </component>
-              <component id="e5baa" class="javax.swing.JTextField" binding="textField5" default-binding="true">
+              <component id="48b25" class="javax.swing.JTextField" binding="txtBorrarMedicamento">
                 <constraints>
-                  <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <minimum-size width="350" height="35"/>
-                    <preferred-size width="350" height="35"/>
-                    <maximum-size width="350" height="35"/>
+                  <grid row="8" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="405" height="35"/>
+                    <preferred-size width="405" height="35"/>
+                    <maximum-size width="405" height="35"/>
                   </grid>
                 </constraints>
                 <properties/>
+              </component>
+              <component id="fea98" class="javax.swing.JButton" binding="Mostrarmedicamentos">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
+                  <text value="Mostrar Medicamentos"/>
+                </properties>
+              </component>
+              <component id="2caa0" class="javax.swing.JLabel" binding="imagenGestion">
+                <constraints>
+                  <grid row="1" column="4" row-span="10" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <hspacer id="f7162">
+                <constraints>
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="f8f2d" class="javax.swing.JButton" binding="borrarMedicamento">
+                <constraints>
+                  <grid row="9" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
+                  <text value="Borrar"/>
+                </properties>
+              </component>
+              <component id="826ee" class="javax.swing.JButton" binding="modificarButton" default-binding="true">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-7419162"/>
+                  <font size="14"/>
+                  <text value="Modificar"/>
+                </properties>
               </component>
             </children>
           </grid>

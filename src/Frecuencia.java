@@ -6,4 +6,12 @@ public class Frecuencia {
         this.intervalo = intervalo;
         this.unidadDeTiempo = unidadDeTiempo;
     }
+
+    public int getIntervalo() {
+        return intervalo;
+    }
+
+    public String getUnidadDeTiempo() {
+        return unidadDeTiempo;
+    }
 }
