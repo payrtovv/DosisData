@@ -1,11 +1,11 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class dosisGUI {
     private JTabbedPane tabbedPane1;
-    private JButton agregarButton;
     private JButton agregarButton1;
     private JButton modificarButton1;
     private JButton mostrarButton1;
@@ -31,7 +31,10 @@ public class dosisGUI {
     private JTextField textFieldDuracionTratamiento3;
     private JTextField textFieldEstado4;
     private JLabel imagenCrearTrat;
-    private JButton listarMedicamentosButton;
+    private JButton Mostrarmedicamentos;
+    private JTextField textField2;
+    private JButton mostrarTratamiento;
+
 
     private ArrayList<Medicamento> medicamentos = new ArrayList<>();
     private ArrayList<Tratamiento> listaTratamientos = new ArrayList<>();
@@ -227,7 +230,43 @@ public class dosisGUI {
                 }
             }
         });
+        mostrarTratamiento.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (listaTratamientos.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No existen tratamientos");
+                } else {
+                    FrmMostrarTratamientos frm = new FrmMostrarTratamientos(listaTratamientos);
+                    JFrame frame = new JFrame("Listar tratamientos");
+                    frame.setContentPane(frm.getMainPanel());
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                }
+            }
+        });
+        Mostrarmedicamentos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (medicamentos.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No existen medicamentos");
+                } else {
+                    FrmMostrarMedicamentosGUI frm = new FrmMostrarMedicamentosGUI(medicamentos);
+                    JFrame frame = new JFrame("Listar Medicamentos");
+                    frame.setContentPane(frm.getMainPanel());
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                }
+
+            }
+        });
     }
+
+
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
