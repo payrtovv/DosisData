@@ -1,6 +1,6 @@
 public class Frecuencia {
     private int intervalo;
-    private String unidadDeTiempo; // "horas", "días", "semanas"
+    private String unidadDeTiempo;
 
     public Frecuencia(int intervalo, String unidadDeTiempo) {
         this.intervalo = intervalo;

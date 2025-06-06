@@ -13,28 +13,14 @@ public class Medicamento {
         return Nombre;
     }
 
-    public void setNombre(String nombre) {
-        Nombre = nombre;
-    }
 
-    public String getDosis() {
-        return dosis;
-    }
-
-    public void setDosis(String dosis) {
-        this.dosis = dosis;
-    }
-
-    public Frecuencia getFrecuencia() {
-        return frecuencia;
-    }
-
-    public void setFrecuencia(Frecuencia frecuencia) {
-        this.frecuencia = frecuencia;
-    }
 
     @Override
     public String toString() {
+        return Nombre;
+    }
+
+    public String toString2() {
         return "Medicamento: " +'\n' +
                 "Nombre= " + Nombre + '\n' +
                 "Dosis= " + dosis + '\n' +

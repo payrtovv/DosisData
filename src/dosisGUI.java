@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,22 +17,20 @@ public class dosisGUI {
     private JTextField txtIntervalo;
     private JLabel imagenGestion;
     private JButton borrarTratamientoButton;
-    private JLabel imagenTratamientos;
     private JTextField textFieldNombreTratamiento2;
     private JButton crearButton;
-    private JComboBox<Tratamiento> comboBox1;    // “combo box 1” para tratamientos
-    private JComboBox<Medicamento> comboBox2;    // “combo box 2” para medicamentos
+    private JComboBox<Tratamiento> comboBox1;
     private JLabel imagenTrat;
     private JButton borrarMedicamento;
     private JButton modificarButton;
-    private JComboBox<Tratamiento> tratamientoBorrarCombo;   // combo para seleccionar tratamiento a borrar
+    private JComboBox<Tratamiento> tratamientoBorrarCombo;
     private JTextField txtBorrarMedicamento;
-    private JTextField textFieldDuracionTratamiento3;
-    private JTextField textFieldEstado4;
-    private JLabel imagenCrearTrat;
     private JButton Mostrarmedicamentos;
-    private JTextField textField2;
+    private JTextField NombreTratamiento;
     private JButton mostrarTratamiento;
+    private JComboBox UnidadDetiempotratamiento;
+    private JTextField TxtDuracion;
+    private JComboBox<Medicamento> comboBox2;
 
 
     private ArrayList<Medicamento> medicamentos = new ArrayList<>();
@@ -80,24 +77,11 @@ public class dosisGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String nombreTratamiento = textFieldNombreTratamiento2.getText().trim();
-                    String duracion = textFieldDuracionTratamiento3.getText().trim();
-                    String estado = textFieldEstado4.getText().trim();
+                    String nombreTratamiento = NombreTratamiento.getText().trim();
+                    int Duracion = Integer.parseInt(TxtDuracion.getText());
+                    String Unidad = UnidadDetiempotratamiento.getSelectedItem().toString();
 
-                    if (nombreTratamiento.isEmpty() || duracion.isEmpty() || estado.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Todos los campos del tratamiento son obligatorios.");
-                        return;
-                    }
 
-                    boolean estadoBool;
-                    if (estado.equalsIgnoreCase("activo")) {
-                        estadoBool = true;
-                    } else if (estado.equalsIgnoreCase("inactivo")) {
-                        estadoBool = false;
-                    } else {
-                        JOptionPane.showMessageDialog(null, "El estado del tratamiento debe ser 'activo' o 'inactivo'.");
-                        return;
-                    }
 
                     for (Tratamiento t : listaTratamientos) {
                         if (t.getNombre().equalsIgnoreCase(nombreTratamiento)) {
@@ -109,17 +93,18 @@ public class dosisGUI {
                         }
                     }
 
-                    Tratamiento nuevoTratamiento = new Tratamiento(nombreTratamiento, duracion, estadoBool);
+                    Tratamiento nuevoTratamiento = new Tratamiento(medicamentos, Duracion, Unidad, nombreTratamiento);
                     listaTratamientos.add(nuevoTratamiento);
                     comboBox1.addItem(nuevoTratamiento);
+
                     tratamientoBorrarCombo.addItem(nuevoTratamiento);
 
                     JOptionPane.showMessageDialog(null,
                             "Tratamiento '" + nombreTratamiento + "' creado con éxito.");
 
-                    textFieldNombreTratamiento2.setText("");
-                    textFieldDuracionTratamiento3.setText("");
-                    textFieldEstado4.setText("");
+                    NombreTratamiento.setText("");
+                    TxtDuracion.setText("");
+                    UnidadDetiempotratamiento.setSelectedIndex(0);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al crear tratamiento: " + ex.getMessage());
                 }

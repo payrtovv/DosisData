@@ -2,14 +2,13 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class FrmMostrarTratamientos {
-    private JPanel mainPanel;
     private JTextArea textArea1;
+    private JPanel mainPanel;
 
     public FrmMostrarTratamientos(ArrayList<Tratamiento> tratamientos) {
         StringBuilder texto = new StringBuilder();
         for (Tratamiento t : tratamientos) {
-            // Si preferís usar el toString() de Tratamiento, bastaría hacer:
-            texto.append(t.toString()).append("\n");
+            texto.append(t.toString2()).append("\n");
 
         }
         textArea1.setText(texto.toString());

@@ -3,15 +3,17 @@ import java.util.Date;
 
 public class Tratamiento {
     private ArrayList<Medicamento> medicamentos;
-    private String duracion;
+    private int duracion;
+    private String UnidadDeTimepo;
     private boolean estado;
     private String nombre;
 
-    public Tratamiento(String nombre, String duracion, boolean estado) {
-        this.nombre = nombre;
+    public Tratamiento(ArrayList<Medicamento> medicamentos, int duracion, String unidadDeTimepo, String nombre) {
+        this.medicamentos = medicamentos;
         this.duracion = duracion;
-        this.estado = estado;
-        this.medicamentos = new ArrayList<>();
+        UnidadDeTimepo = unidadDeTimepo;
+        this.nombre = nombre;
+        this.estado = true;
     }
 
     public void agregarMedicamento(Medicamento medicamento) {
@@ -29,8 +31,8 @@ public class Tratamiento {
         return medicamentos;
     }
 
-    @Override
-    public String toString() {
+
+    public String toString2() {
         StringBuilder sb = new StringBuilder();
         sb.append("Tratamiento:\n");
         sb.append("  Nombre   = ").append(nombre).append("\n");
@@ -41,5 +43,10 @@ public class Tratamiento {
             sb.append("    • ").append(m.toString().replaceAll("(?m)^", "      ")).append("\n");
         }
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return nombre; // Solo el nombre se verá en el combo
     }
 }

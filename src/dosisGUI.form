@@ -164,16 +164,7 @@
                   <text value="Duración"/>
                 </properties>
               </component>
-              <component id="5deec" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Gadugi" size="18"/>
-                  <text value="Estado"/>
-                </properties>
-              </component>
-              <component id="b4974" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+              <component id="b4974" class="javax.swing.JTextField" binding="NombreTratamiento">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <minimum-size width="-1" height="35"/>
@@ -256,15 +247,25 @@
                   <text value="Tratamiento"/>
                 </properties>
               </component>
-              <component id="1fa3e" class="javax.swing.JComboBox" default-binding="true">
+              <component id="1fa3e" class="javax.swing.JComboBox" binding="UnidadDetiempotratamiento">
                 <constraints>
                   <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <model>
+                    <item value="Dias "/>
+                    <item value="Semanas"/>
+                    <item value="Meses"/>
+                  </model>
+                </properties>
               </component>
-              <component id="7a3d6" class="javax.swing.JComboBox" default-binding="true">
+              <component id="4649c" class="javax.swing.JTextField" binding="TxtDuracion">
                 <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="35"/>
+                    <preferred-size width="-1" height="35"/>
+                    <maximum-size width="-1" height="35"/>
+                  </grid>
                 </constraints>
                 <properties/>
               </component>

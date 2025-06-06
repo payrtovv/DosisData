@@ -10,7 +10,7 @@ public class FrmMostrarMedicamentosGUI {
     public FrmMostrarMedicamentosGUI(ArrayList<Medicamento> medicamentos) {
         StringBuilder texto = new StringBuilder();
         for (Medicamento medicamento : medicamentos) {
-            texto.append(medicamento.toString()).append("\n");
+            texto.append(medicamento.toString2()).append("\n");
         }
         textArea1.setText(texto.toString());
     }
