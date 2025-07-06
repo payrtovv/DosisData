@@ -1,7 +1,9 @@
+// src/dosisGUI.java
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.List;
 
 public class dosisGUI {
     private JTabbedPane tabbedPane1;
@@ -24,20 +26,16 @@ public class dosisGUI {
     private JButton borrarMedicamento;
     private JButton modificarButton;
     private JComboBox<Tratamiento> tratamientoBorrarCombo;
-    private JTextField txtBorrarMedicamento;
     private JButton Mostrarmedicamentos;
     private JTextField NombreTratamiento;
     private JButton mostrarTratamiento;
     private JComboBox UnidadDetiempotratamiento;
     private JTextField TxtDuracion;
     private JComboBox<Medicamento> comboBox2;
-
-
-    private ArrayList<Medicamento> medicamentos = new ArrayList<>();
-    private ArrayList<Tratamiento> listaTratamientos = new ArrayList<>();
+    private JComboBox comboBoxBorrarMedicamento;
 
     public dosisGUI() {
-        // Cargar imagenes (igual que antes)
+        // Load images
         try {
             ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Imagen_gestionarMeds.png"));
             imagenGestion.setIcon(icono);
@@ -47,7 +45,11 @@ public class dosisGUI {
             System.out.println("No se pudo cargar la imagen: " + e.getMessage());
         }
 
-        // Agregar Medicamento
+        refreshMedicamentosCombo();
+        refreshTratamientosCombos();
+        refreshComboBoxBorrarMedicamento();
+
+
         agregarMedicamentoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,32 +60,33 @@ public class dosisGUI {
                     String unidad = comboBoxunidad.getSelectedItem().toString();
 
                     Medicamento medicamento = new Medicamento(nombre, dosis, new Frecuencia(intervalo, unidad));
-                    medicamentos.add(medicamento);
-                    comboBox2.addItem(medicamento);
+                    new MedicamentoDAO().addMedicamento(medicamento);
+
+                    refreshMedicamentosCombo();
                     JOptionPane.showMessageDialog(null, "Medicamento agregado con éxito.");
 
                     txtDosis.setText("");
                     txtNombre.setText("");
                     txtIntervalo.setText("");
                     comboBoxunidad.setSelectedIndex(0);
+
+                    refreshComboBoxBorrarMedicamento();
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al agregar: " + ex.getMessage());
                 }
             }
         });
 
-        // Crear Tratamiento
         crearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     String nombreTratamiento = NombreTratamiento.getText().trim();
-                    int Duracion = Integer.parseInt(TxtDuracion.getText());
-                    String Unidad = UnidadDetiempotratamiento.getSelectedItem().toString();
+                    int duracion = Integer.parseInt(TxtDuracion.getText());
+                    String unidad = UnidadDetiempotratamiento.getSelectedItem().toString();
 
-
-
-                    for (Tratamiento t : listaTratamientos) {
+                    for (Tratamiento t : new TratamientoDAO().getAllTratamientos()) {
                         if (t.getNombre().equalsIgnoreCase(nombreTratamiento)) {
                             JOptionPane.showMessageDialog(pGeneral,
                                     "Ya existe un tratamiento con el nombre: " + nombreTratamiento,
@@ -93,11 +96,10 @@ public class dosisGUI {
                         }
                     }
 
-                    Tratamiento nuevoTratamiento = new Tratamiento(medicamentos, Duracion, Unidad, nombreTratamiento);
-                    listaTratamientos.add(nuevoTratamiento);
-                    comboBox1.addItem(nuevoTratamiento);
+                    Tratamiento nuevoTratamiento = new Tratamiento(null, duracion, unidad, nombreTratamiento); // medicamentos=null
+                    new TratamientoDAO().addTratamiento(nuevoTratamiento);
 
-                    tratamientoBorrarCombo.addItem(nuevoTratamiento);
+                    refreshTratamientosCombos();
 
                     JOptionPane.showMessageDialog(null,
                             "Tratamiento '" + nombreTratamiento + "' creado con éxito.");
@@ -111,154 +113,171 @@ public class dosisGUI {
             }
         });
 
-        // Agregar Medicamento a Tratamiento
         agregarButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Tratamiento tratamientoSeleccionado = (Tratamiento) comboBox1.getSelectedItem();
+                Medicamento medicamentoSeleccionado = (Medicamento) comboBox2.getSelectedItem();
+
+                if (tratamientoSeleccionado == null || medicamentoSeleccionado == null) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un tratamiento y un medicamento.");
+                    return;
+                }
+
                 try {
-                    Tratamiento tratamientoSeleccionado = comboBox1.getItemAt(comboBox1.getSelectedIndex());
-                    Medicamento medicamentoSeleccionado = comboBox2.getItemAt(comboBox2.getSelectedIndex());
-
-                    if (tratamientoSeleccionado == null) {
-                        JOptionPane.showMessageDialog(null, "Por favor, seleccione un tratamiento de la lista.");
-                        return;
-                    }
-                    if (medicamentoSeleccionado == null) {
-                        JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento de la lista.");
-                        return;
-                    }
-
-                    if (tratamientoSeleccionado.getMedicamentos().contains(medicamentoSeleccionado)) {
-                        JOptionPane.showMessageDialog(pGeneral,
-                                "El medicamento '" + medicamentoSeleccionado.getNombre() +
-                                        "' ya ha sido agregado al tratamiento.");
-                        return;
-                    }
-
-                    tratamientoSeleccionado.agregarMedicamento(medicamentoSeleccionado);
-                    JOptionPane.showMessageDialog(pGeneral,
-                            "Medicamento '" + medicamentoSeleccionado.getNombre() +
-                                    "' agregado al tratamiento '" + tratamientoSeleccionado.getNombre() +
-                                    "' con éxito.",
-                            "Éxito",
-                            JOptionPane.INFORMATION_MESSAGE);
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null,
-                            "Error al agregar medicamento al tratamiento: " + ex.getMessage());
+                    new TratamientoMedicamentoDAO().addMedicamentoToTratamiento(tratamientoSeleccionado.getId(), medicamentoSeleccionado.getId());
+                    JOptionPane.showMessageDialog(null, "Medicamento agregado al tratamiento con éxito.");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al agregar medicamento al tratamiento: " + ex.getMessage());
                 }
             }
         });
 
-        // Borrar Medicamento
+
+
         borrarMedicamento.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nombreABorrar = txtBorrarMedicamento.getText().trim();
-                if (nombreABorrar.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Ingrese el nombre del medicamento a borrar.");
+                Medicamento seleccionado = (Medicamento) comboBoxBorrarMedicamento.getSelectedItem();
+                if (seleccionado == null) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un medicamento para borrar.");
                     return;
                 }
-
-                Medicamento medicamentoEncontrado = null;
-                for (Medicamento m : medicamentos) {
-                    if (m.getNombre().equalsIgnoreCase(nombreABorrar)) {
-                        medicamentoEncontrado = m;
-                        break;
-                    }
-                }
-
-                if (medicamentoEncontrado == null) {
-                    JOptionPane.showMessageDialog(null,
-                            "No se encontró ningún medicamento con el nombre: " + nombreABorrar);
-                    return;
-                }
-
                 int confirm = JOptionPane.showConfirmDialog(null,
                         "¿Está seguro de que desea eliminar el medicamento '" +
-                                medicamentoEncontrado.getNombre() + "'?",
+                                seleccionado.getNombre() + "'?",
                         "Confirmar eliminación",
                         JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    medicamentos.remove(medicamentoEncontrado);
-                    comboBox2.removeItem(medicamentoEncontrado);
-                    JOptionPane.showMessageDialog(null,
-                            "Medicamento '" + medicamentoEncontrado.getNombre() + "' eliminado con éxito.");
-                    txtBorrarMedicamento.setText("");
+                    try {
+                        new MedicamentoDAO().deleteMedicamento(seleccionado.getNombre());
+                        refreshMedicamentosCombo();
+                        refreshComboBoxBorrarMedicamento();
+                        JOptionPane.showMessageDialog(null, "Medicamento eliminado con éxito.");
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage());
+                    }
                 }
             }
         });
 
-        // Borrar Tratamiento
-        borrarTratamientoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Tratamiento tratamientoSeleccionado = tratamientoBorrarCombo.getItemAt(tratamientoBorrarCombo.getSelectedIndex());
-                if (tratamientoSeleccionado == null) {
-                    JOptionPane.showMessageDialog(null, "Seleccione un tratamiento para eliminar.");
-                    return;
-                }
-
-                int confirm = JOptionPane.showConfirmDialog(null,
-                        "¿Está seguro de que desea eliminar el tratamiento '" +
-                                tratamientoSeleccionado.getNombre() + "'?",
-                        "Confirmar eliminación",
-                        JOptionPane.YES_NO_OPTION);
-
-                if (confirm == JOptionPane.YES_OPTION) {
-                    listaTratamientos.remove(tratamientoSeleccionado);
-                    comboBox1.removeItem(tratamientoSeleccionado);
-                    tratamientoBorrarCombo.removeItem(tratamientoSeleccionado);
-                    JOptionPane.showMessageDialog(null,
-                            "Tratamiento '" + tratamientoSeleccionado.getNombre() + "' eliminado con éxito.");
-                }
-            }
-        });
         mostrarTratamiento.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (listaTratamientos.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "No existen tratamientos");
-                } else {
-                    FrmMostrarTratamientos frm = new FrmMostrarTratamientos(listaTratamientos);
-                    JFrame frame = new JFrame("Listar tratamientos");
-                    frame.setContentPane(frm.getMainPanel());
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.pack();
-                    frame.setLocationRelativeTo(null);
-                    frame.setVisible(true);
+                try {
+                    List<Tratamiento> tratamientos = new TratamientoDAO().getAllTratamientos();
+                    if (tratamientos.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No existen tratamientos");
+                    } else {
+                        FrmMostrarTratamientos frm = new FrmMostrarTratamientos(new java.util.ArrayList<>(tratamientos));
+                        JFrame frame = new JFrame("Listar tratamientos");
+                        frame.setContentPane(frm.getMainPanel());
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.pack();
+                        frame.setLocationRelativeTo(null);
+                        frame.setVisible(true);
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al mostrar tratamientos: " + ex.getMessage());
                 }
             }
         });
+
         Mostrarmedicamentos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (medicamentos.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "No existen medicamentos");
-                } else {
-                    FrmMostrarMedicamentosGUI frm = new FrmMostrarMedicamentosGUI(medicamentos);
-                    JFrame frame = new JFrame("Listar Medicamentos");
-                    frame.setContentPane(frm.getMainPanel());
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.pack();
-                    frame.setLocationRelativeTo(null);
-                    frame.setVisible(true);
+                try {
+                    List<Medicamento> medicamentos = new MedicamentoDAO().getAllMedicamentos();
+                    if (medicamentos.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No existen medicamentos");
+                    } else {
+                        FrmMostrarMedicamentosGUI frm = new FrmMostrarMedicamentosGUI(new java.util.ArrayList<>(medicamentos));
+                        JFrame frame = new JFrame("Listar Medicamentos");
+                        frame.setContentPane(frm.getMainPanel());
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.pack();
+                        frame.setLocationRelativeTo(null);
+                        frame.setVisible(true);
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al mostrar medicamentos: " + ex.getMessage());
                 }
+            }
+        });
 
+        borrarTratamientoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Tratamiento seleccionado = (Tratamiento) tratamientoBorrarCombo.getSelectedItem();
+                if (seleccionado == null) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un tratamiento para borrar.");
+                    return;
+                }
+                int confirm = JOptionPane.showConfirmDialog(null,
+                        "¿Está seguro de que desea eliminar el tratamiento '" +
+                                seleccionado.getNombre() + "'?",
+                        "Confirmar eliminación",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        new TratamientoDAO().deleteTratamiento(seleccionado.getId());
+                        refreshTratamientosCombos();
+                        JOptionPane.showMessageDialog(null, "Tratamiento eliminado con éxito.");
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Error al eliminar tratamiento: " + ex.getMessage());
+                    }
+                }
             }
         });
     }
 
+    private void refreshMedicamentosCombo() {
+        try {
+            comboBox2.removeAllItems();
+            for (Medicamento m : new MedicamentoDAO().getAllMedicamentos()) {
+                comboBox2.addItem(m);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar medicamentos: " + e.getMessage());
+        }
+    }
 
+    private void refreshTratamientosCombos() {
+        try {
+            comboBox1.removeAllItems();
+            tratamientoBorrarCombo.removeAllItems();
+            for (Tratamiento t : new TratamientoDAO().getAllTratamientos()) {
+                comboBox1.addItem(t);
+                tratamientoBorrarCombo.addItem(t);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar tratamientos: " + e.getMessage());
+        }
+    }
 
+    public JPanel getMainPanel() {
+        return pGeneral;
+    }
+
+    private void refreshComboBoxBorrarMedicamento() {
+        try {
+            comboBoxBorrarMedicamento.removeAllItems();
+            for (Medicamento m : new MedicamentoDAO().getAllMedicamentos()) {
+                comboBoxBorrarMedicamento.addItem(m);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar medicamentos: " + e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
                 JFrame frame = new JFrame("Gestor de Medicamentos");
                 dosisGUI gui = new dosisGUI();
-                frame.setContentPane(gui.pGeneral);
+                frame.setContentPane(gui.getMainPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setLocationRelativeTo(null);

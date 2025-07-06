@@ -14,4 +14,8 @@ public class Frecuencia {
     public String getUnidadDeTiempo() {
         return unidadDeTiempo;
     }
+
+    public String getUnidad() {
+        return unidadDeTiempo;
+    }
 }
