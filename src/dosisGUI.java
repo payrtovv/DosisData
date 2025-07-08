@@ -299,8 +299,17 @@ public class dosisGUI {
         });
 
 
-
-
+        modificarButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Tratamiento seleccionado = (Tratamiento) tratamientoBorrarCombo.getSelectedItem();
+                if (seleccionado == null) {
+                    JOptionPane.showMessageDialog(pGeneral, "Por favor, seleccione un tratamiento para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                showModificarTratamientoDialog(seleccionado);
+            }
+        });
     }
 
     private void refreshMedicamentosCombo() {
@@ -426,6 +435,42 @@ public class dosisGUI {
                 JOptionPane.showMessageDialog(pGeneral, "El intervalo debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(pGeneral, "Error al actualizar en la base de datos: " + ex.getMessage(), "Error de BD", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void showModificarTratamientoDialog(Tratamiento tratamiento) {
+        JTextField nombreField = new JTextField(tratamiento.getNombre(), 20);
+        JTextField duracionField = new JTextField(String.valueOf(tratamiento.getDuracion()), 5);
+        JComboBox<String> unidadCombo = new JComboBox<>(new String[]{"Días", "Semanas", "Meses"});
+        unidadCombo.setSelectedItem(tratamiento.getUnidadDeTimepo());
+
+        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
+        panel.add(new JLabel("Nombre:"));
+        panel.add(nombreField);
+        panel.add(new JLabel("Duración:"));
+        panel.add(duracionField);
+        panel.add(new JLabel("Unidad de Tiempo:"));
+        panel.add(unidadCombo);
+
+        int result = JOptionPane.showConfirmDialog(pGeneral, panel, "Modificar Tratamiento",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                tratamiento.setNombre(nombreField.getText().trim());
+                tratamiento.setDuracion(Integer.parseInt(duracionField.getText().trim()));
+                tratamiento.setUnidadDeTimepo((String) unidadCombo.getSelectedItem());
+
+                new TratamientoDAO().updateTratamiento(tratamiento);
+
+                refreshTratamientosCombos();
+
+                JOptionPane.showMessageDialog(pGeneral, "Tratamiento actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(pGeneral, "La duración debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(pGeneral, "Error al actualizar el tratamiento: " + ex.getMessage(), "Error de BD", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
