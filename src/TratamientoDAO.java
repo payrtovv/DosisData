@@ -55,15 +55,6 @@ public class TratamientoDAO {
         return medicamentos;
     }
 
-    public void removeMedicamentoFromTratamiento(int tratamientoId, int medicamentoId) throws SQLException {
-        String sql = "DELETE FROM tratamiento_medicamento WHERE tratamiento_id = ? AND medicamento_id = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, tratamientoId);
-            ps.setInt(2, medicamentoId);
-            ps.executeUpdate();
-        }
-    }
 
     public List<Tratamiento> getAllTratamientos() throws SQLException {
         List<Tratamiento> list = new ArrayList<>();

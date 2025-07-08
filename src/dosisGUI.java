@@ -15,7 +15,6 @@ public class dosisGUI {
     private JButton modificarButton1;
     private JButton mostrarButton1;
     private JPanel pGeneral;
-    private JPanel Inicio;
     private JButton agregarMedicamentoButton;
     private JTextField txtNombre;
     private JTextField txtDosis;
@@ -45,8 +44,6 @@ public class dosisGUI {
     private JComboBox comboBoxModificarMedicamento;
     private JComboBox comboBorrarRecordatorio;
     private JButton borrarButton;
-    private JLabel Recordat;
-    private JLabel Titulo;
 
     public dosisGUI() {
         // Load images
@@ -99,10 +96,6 @@ public class dosisGUI {
                     refreshComboBoxBorrarMedicamento();
                     refreshComboBoxseleccionarMedicamento();
                     refreshComboBoxModificarMedicamento();
-
-
-
-
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al agregar: " + ex.getMessage());

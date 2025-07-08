@@ -26,7 +26,6 @@ public class Medicamento {
             this.frecuencia = frecuencia;
         }
 
-        // Overload constructor if needed (without id)
         public Medicamento(String nombre, String dosis, Frecuencia frecuencia) {
             this.Nombre = nombre;
             this.dosis = dosis;
