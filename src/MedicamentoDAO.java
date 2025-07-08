@@ -7,10 +7,7 @@ import java.util.List;
 
 public class MedicamentoDAO {
     public void addMedicamento(Medicamento m) throws SQLException {
-        String sql = "INSERT INTO medicamentos (nombre, dosis, intervalo, unidad, proxima_dosis, inicio_dosis) VALUES (?, ?, ?, ?, ?, ?)";
-
-        LocalDateTime inicioDosis = LocalDateTime.now();
-        LocalDateTime proximaDosis = calcularProximaDosisDesdeInicio(inicioDosis, m.getFrecuencia());
+        String sql = "INSERT INTO medicamentos (nombre, dosis, intervalo, unidad, hora_recordatorio) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -19,12 +16,17 @@ public class MedicamentoDAO {
             ps.setString(2, m.getDosis());
             ps.setInt(3, m.getFrecuencia().getIntervalo());
             ps.setString(4, m.getFrecuencia().getUnidad());
-            ps.setTimestamp(5, Timestamp.valueOf(proximaDosis));
-            ps.setTimestamp(6, Timestamp.valueOf(inicioDosis));
+
+            if (m.getHoraRecordatorio() != null) {
+                ps.setTime(5, Time.valueOf(m.getHoraRecordatorio()));
+            } else {
+                ps.setNull(5, java.sql.Types.TIME);
+            }
 
             ps.executeUpdate();
         }
     }
+
 
     public List<Medicamento> getMedicamentosConRecordatorio() throws SQLException {
         List<Medicamento> list = new ArrayList<>();
@@ -66,25 +68,6 @@ public class MedicamentoDAO {
 
 
 
-    private LocalDateTime calcularProximaDosisDesdeInicio(LocalDateTime inicio, Frecuencia frecuencia) {
-        int intervalo = frecuencia.getIntervalo();
-        String unidad = frecuencia.getUnidad();
-
-        switch (unidad) {
-            case "Minutos":
-                return inicio.plusMinutes(intervalo);
-            case "Horas":
-                return inicio.plusHours(intervalo);
-            case "días":
-            case "dias":
-                return inicio.plusDays(intervalo);
-            default:
-                throw new IllegalArgumentException("Unidad de frecuencia no soportada: " + unidad);
-        }
-    }
-
-
-
     public List<Medicamento> getAllMedicamentos() throws SQLException {
         List<Medicamento> list = new ArrayList<>();
         String sql = "SELECT * FROM medicamentos";
@@ -111,6 +94,8 @@ public class MedicamentoDAO {
             ps.executeUpdate();
         }
     }
+
+
 
     public void actualizarHoraRecordatorio(int medicamentoId, LocalTime hora) throws SQLException {
         String sql = "UPDATE medicamentos SET hora_recordatorio = ? WHERE id = ?";

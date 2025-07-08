@@ -43,6 +43,10 @@ public class dosisGUI {
     private JButton agregarRecordatorioButton;
     private JTable tabltablaRecordatorios;
     private JComboBox comboBoxModificarMedicamento;
+    private JComboBox comboBorrarRecordatorio;
+    private JButton borrarButton;
+    private JLabel Recordat;
+    private JLabel Titulo;
 
     public dosisGUI() {
         // Load images
@@ -65,6 +69,7 @@ public class dosisGUI {
         refreshComboBoxseleccionarMedicamento();
         cargarRecordatoriosPendientes();
         refreshComboBoxModificarMedicamento();
+        cargarMedicamentosConRecordatorio();
 
         agregarMedicamentoButton.addActionListener(new ActionListener() {
             @Override
@@ -92,6 +97,9 @@ public class dosisGUI {
                     comboBoxunidad.setSelectedIndex(0);
 
                     refreshComboBoxBorrarMedicamento();
+                    refreshComboBoxseleccionarMedicamento();
+                    refreshComboBoxModificarMedicamento();
+
 
 
 
@@ -179,6 +187,9 @@ public class dosisGUI {
                         refreshMedicamentosCombo();
                         refreshComboBoxBorrarMedicamento();
                         JOptionPane.showMessageDialog(null, "Medicamento eliminado con éxito.");
+                        refreshComboBoxModificarMedicamento();
+                        refreshComboBoxseleccionarMedicamento();
+
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "Error al eliminar: " + ex.getMessage());
                     }
@@ -278,6 +289,9 @@ public class dosisGUI {
                     new MedicamentoDAO().actualizarHoraRecordatorio(medicamento.getId(), hora);
                     JOptionPane.showMessageDialog(null, "Recordatorio guardado para las " + hora);
                     Recordatorio.programarRecordatorioFijo(medicamento, hora);
+                    cargarRecordatoriosPendientes();
+                    cargarMedicamentosConRecordatorio();
+
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error al guardar el recordatorio: " + ex.getMessage());
                 }
@@ -290,11 +304,14 @@ public class dosisGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Medicamento seleccionado = (Medicamento) comboBoxModificarMedicamento.getSelectedItem();
+
                 if (seleccionado == null) {
                     JOptionPane.showMessageDialog(pGeneral, "Por favor, seleccione un medicamento para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 showModificarMedicamentoDialog(seleccionado);
+                refreshComboBoxModificarMedicamento();
+                refreshComboBoxseleccionarMedicamento();
             }
         });
 
@@ -308,6 +325,31 @@ public class dosisGUI {
                     return;
                 }
                 showModificarTratamientoDialog(seleccionado);
+            }
+        });
+        borrarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medicamento seleccionado = (Medicamento) comboBorrarRecordatorio.getSelectedItem();
+                if (seleccionado != null) {
+                    int confirm = JOptionPane.showConfirmDialog(null,
+                            "¿Estás seguro de que quieres borrar el recordatorio para: " + seleccionado.getNombre() + "?",
+                            "Confirmar borrado",
+                            JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        try {
+                            MedicamentoDAO dao = new MedicamentoDAO();
+                            dao.deleteMedicamento(seleccionado.getNombre());  // también puedes usar el ID si prefieres
+                            JOptionPane.showMessageDialog(null, "Recordatorio eliminado con éxito.");
+                            cargarMedicamentosConRecordatorio(); // actualiza el combo
+                            cargarRecordatoriosPendientes();
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(null, "Error al borrar: " + ex.getMessage());
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, selecciona un medicamento.");
+                }
             }
         });
     }
@@ -474,6 +516,20 @@ public class dosisGUI {
             }
         }
     }
+
+    private void cargarMedicamentosConRecordatorio() {
+        try {
+            MedicamentoDAO dao = new MedicamentoDAO();
+            List<Medicamento> medicamentos = dao.getMedicamentosConRecordatorio();
+            comboBorrarRecordatorio.removeAllItems();
+            for (Medicamento m : medicamentos) {
+                comboBorrarRecordatorio.addItem(m);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar los medicamentos: " + e.getMessage());
+        }
+    }
+
 
 
     public static void main(String[] args) {
