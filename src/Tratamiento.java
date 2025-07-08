@@ -38,14 +38,7 @@ public class Tratamiento {
 
 
 
-    public void agregarMedicamento(Medicamento medicamento) {
-        try {
-            new TratamientoDAO().addMedicamentoToTratamiento(this.id, medicamento.getId());
-            this.medicamentos.add(medicamento);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
     public String getNombre() {

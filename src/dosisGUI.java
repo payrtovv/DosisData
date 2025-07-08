@@ -1,9 +1,13 @@
 // src/dosisGUI.java
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.List;
+import java.awt.GridLayout;
+
 
 public class dosisGUI {
     private JTabbedPane tabbedPane1;
@@ -33,6 +37,12 @@ public class dosisGUI {
     private JTextField TxtDuracion;
     private JComboBox<Medicamento> comboBox2;
     private JComboBox comboBoxBorrarMedicamento;
+    private JComboBox ComboMedicamentoRecordatorios;
+    private JComboBox comboBoxhora;
+    private JComboBox comboBoxminuto;
+    private JButton agregarRecordatorioButton;
+    private JTable tabltablaRecordatorios;
+    private JComboBox comboBoxModificarMedicamento;
 
     public dosisGUI() {
         // Load images
@@ -45,10 +55,16 @@ public class dosisGUI {
             System.out.println("No se pudo cargar la imagen: " + e.getMessage());
         }
 
+
+
+
+
         refreshMedicamentosCombo();
         refreshTratamientosCombos();
         refreshComboBoxBorrarMedicamento();
-
+        refreshComboBoxseleccionarMedicamento();
+        cargarRecordatoriosPendientes();
+        refreshComboBoxModificarMedicamento();
 
         agregarMedicamentoButton.addActionListener(new ActionListener() {
             @Override
@@ -57,6 +73,10 @@ public class dosisGUI {
                     String nombre = txtNombre.getText().trim();
                     String dosis = txtDosis.getText().trim();
                     int intervalo = Integer.parseInt(txtIntervalo.getText().trim());
+                    if (intervalo <= 0) {
+                        JOptionPane.showMessageDialog(null, "El intervalo debe ser mayor que cero.");
+                        return;
+                    }
                     String unidad = comboBoxunidad.getSelectedItem().toString();
 
                     Medicamento medicamento = new Medicamento(nombre, dosis, new Frecuencia(intervalo, unidad));
@@ -65,12 +85,16 @@ public class dosisGUI {
                     refreshMedicamentosCombo();
                     JOptionPane.showMessageDialog(null, "Medicamento agregado con éxito.");
 
+
                     txtDosis.setText("");
                     txtNombre.setText("");
                     txtIntervalo.setText("");
                     comboBoxunidad.setSelectedIndex(0);
 
                     refreshComboBoxBorrarMedicamento();
+
+
+
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Error al agregar: " + ex.getMessage());
@@ -231,6 +255,52 @@ public class dosisGUI {
                 }
             }
         });
+
+
+        agregarRecordatorioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medicamento medicamento = (Medicamento) ComboMedicamentoRecordatorios.getSelectedItem();
+                if (medicamento == null) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un medicamento.");
+                    return;
+                }
+
+                String horaStr = (String) comboBoxhora.getSelectedItem();
+                String minutoStr = (String) comboBoxminuto.getSelectedItem();
+
+                LocalTime hora = LocalTime.of(
+                        Integer.parseInt(horaStr),
+                        Integer.parseInt(minutoStr)
+                );
+
+                try {
+                    new MedicamentoDAO().actualizarHoraRecordatorio(medicamento.getId(), hora);
+                    JOptionPane.showMessageDialog(null, "Recordatorio guardado para las " + hora);
+                    Recordatorio.programarRecordatorioFijo(medicamento, hora);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al guardar el recordatorio: " + ex.getMessage());
+                }
+
+            }
+        });
+
+
+        modificarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Medicamento seleccionado = (Medicamento) comboBoxModificarMedicamento.getSelectedItem();
+                if (seleccionado == null) {
+                    JOptionPane.showMessageDialog(pGeneral, "Por favor, seleccione un medicamento para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                showModificarMedicamentoDialog(seleccionado);
+            }
+        });
+
+
+
+
     }
 
     private void refreshMedicamentosCombo() {
@@ -272,6 +342,95 @@ public class dosisGUI {
         }
     }
 
+    private void refreshComboBoxModificarMedicamento() {
+        try {
+            comboBoxModificarMedicamento.removeAllItems();
+            for (Medicamento m : new MedicamentoDAO().getAllMedicamentos()) {
+                comboBoxModificarMedicamento.addItem(m);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar medicamentos: " + e.getMessage());
+        }
+    }
+
+    private void refreshComboBoxseleccionarMedicamento() {
+        try {
+            ComboMedicamentoRecordatorios.removeAllItems();
+            for (Medicamento m : new MedicamentoDAO().getAllMedicamentos()) {
+                ComboMedicamentoRecordatorios.addItem(m);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar medicamentos: " + e.getMessage());
+        }
+    }
+
+    private void cargarRecordatoriosPendientes() {
+        String[] columnas = {"Nombre", "Dosis", "Intervalo", "Unidad", "Hora de Recordatorio"};
+        DefaultTableModel model = new DefaultTableModel(columnas, 0);
+
+        model.addRow(new Object[]{"Nombre", "Dosis", "Intervalo", "Unidad", "Hora de Recordatorio"});
+
+        try {
+            List<Medicamento> lista = new MedicamentoDAO().getMedicamentosConRecordatorio();
+            for (Medicamento m : lista) {
+                Object[] fila = {
+                        m.getNombre(),
+                        m.getDosis(),
+                        m.getFrecuencia().getIntervalo(),
+                        m.getFrecuencia().getUnidad(),
+                        m.getHoraRecordatorio().toString()
+                };
+                model.addRow(fila);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar recordatorios: " + e.getMessage());
+        }
+
+        tabltablaRecordatorios.setModel(model);
+    }
+
+    private void showModificarMedicamentoDialog(Medicamento medicamento) {
+        JTextField nombreField = new JTextField(medicamento.getNombre(), 20);
+        JTextField dosisField = new JTextField(medicamento.getDosis(), 20);
+        JTextField intervaloField = new JTextField(String.valueOf(medicamento.getFrecuencia().getIntervalo()), 5);
+        JComboBox<String> unidadCombo = new JComboBox<>(new String[]{"Horas", "Días", "Semanas"});
+        unidadCombo.setSelectedItem(medicamento.getFrecuencia().getUnidadDeTiempo());
+
+        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
+        panel.add(new JLabel("Nombre:"));
+        panel.add(nombreField);
+        panel.add(new JLabel("Dosis:"));
+        panel.add(dosisField);
+        panel.add(new JLabel("Intervalo:"));
+        panel.add(intervaloField);
+        panel.add(new JLabel("Unidad de Tiempo:"));
+        panel.add(unidadCombo);
+
+        int result = JOptionPane.showConfirmDialog(pGeneral, panel, "Modificar Medicamento",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                medicamento.setNombre(nombreField.getText().trim());
+                medicamento.setDosis(dosisField.getText().trim());
+                int intervalo = Integer.parseInt(intervaloField.getText().trim());
+                String unidad = (String) unidadCombo.getSelectedItem();
+                medicamento.setFrecuencia(new Frecuencia(intervalo, unidad));
+
+                new MedicamentoDAO().updateMedicamento(medicamento);
+                refreshMedicamentosCombo();
+                refreshComboBoxBorrarMedicamento();
+
+                JOptionPane.showMessageDialog(pGeneral, "Medicamento actualizado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(pGeneral, "El intervalo debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(pGeneral, "Error al actualizar en la base de datos: " + ex.getMessage(), "Error de BD", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -287,4 +446,6 @@ public class dosisGUI {
             }
         });
     }
+
+
 }

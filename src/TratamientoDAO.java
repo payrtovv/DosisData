@@ -17,12 +17,15 @@ public class TratamientoDAO {
         }
     }
 
-    public void addMedicamentoToTratamiento(int tratamientoId, int medicamentoId) throws SQLException {
-        String sql = "INSERT INTO tratamiento_medicamento (tratamiento_id, medicamento_id) VALUES (?, ?)";
+    public void updateTratamiento(Tratamiento t) throws SQLException {
+        String sql = "UPDATE tratamientos SET nombre = ?, duracion = ?, unidad_de_tiempo = ?, estado = ? WHERE id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, tratamientoId);
-            ps.setInt(2, medicamentoId);
+            ps.setString(1, t.getNombre());
+            ps.setInt(2, t.getDuracion());
+            ps.setString(3, t.getUnidadDeTimepo());
+            ps.setBoolean(4, t.isEstado());
+            ps.setInt(5, t.getId());
             ps.executeUpdate();
         }
     }

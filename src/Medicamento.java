@@ -1,10 +1,25 @@
+import javax.swing.*;
+
+import java.time.LocalTime;
+
+
 public class Medicamento {
          private int id;
         private String Nombre;
         private String dosis;
         private Frecuencia frecuencia;
+        private LocalTime horaRecordatorio;
 
-        public Medicamento(int id, String nombre, String dosis, Frecuencia frecuencia) {
+    public LocalTime getHoraRecordatorio() {
+        return horaRecordatorio;
+    }
+
+    public void setHoraRecordatorio(LocalTime horaRecordatorio) {
+        this.horaRecordatorio = horaRecordatorio;
+    }
+
+
+    public Medicamento(int id, String nombre, String dosis, Frecuencia frecuencia) {
             this.id = id;
             this.Nombre = nombre;
             this.dosis = dosis;
@@ -51,6 +66,9 @@ public class Medicamento {
         this.frecuencia = frecuencia;
     }
 
+
+
+
     @Override
     public String toString() {
         return Nombre;
@@ -63,4 +81,9 @@ public class Medicamento {
                 "Frecuencia= " + " Cada " + frecuencia.getIntervalo() + " "+ frecuencia.getUnidadDeTiempo() +'\n';
 
     }
+
+
+
+
+
 }
